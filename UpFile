@@ -38,5 +38,5 @@ $deviceInfo =  $deviceInfo | ConvertTo-Json
 $uri = 'https://c12c6805-7e33-44ea-a095-2105f519a048.webhook.sec.azure-automation.net/webhooks?token=9%2bmk5MWdaCTP7S%2bIVwBNEtgp%2fqnvgwiS5B%2fCkJYXaFY%3d'
 $body = $deviceInfo
 $header = @{"Content-Type" = "application/json"}
-$response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header
+$response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header -UseBasicParsing
 $jobid = (ConvertFrom-Json ($response.Content)).jobids[0]
