@@ -90,3 +90,5 @@ Write-Host "
 Triggerd Info : $deviceInfo" -ForegroundColor Green
 Write-Host "
 Task Completed." -ForegroundColor Blue
+
+
