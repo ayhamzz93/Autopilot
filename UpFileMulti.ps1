@@ -45,7 +45,7 @@ Write-Host "Running..." -ForegroundColor Blue
 #Sets Hash Directory and Generates HardwareHash file
 $CSVPath = new-item -Path "c:\" -Name "hhash" -ItemType Directory -Force
 $serialnumber = Get-WmiObject win32_bios | select Serialnumber
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+Install-PackageProvider -Name "NuGet" -MinimumVersion 2.8.5.201 -Force | Out-Null
 Install-Script -Name Get-WindowsAutoPilotInfo -Force
 Set-ExecutionPolicy bypass -Force
 Get-WindowsAutoPilotInfo -Outputfile $CSVPath\$($serialnumber.SerialNumber)-Hash.csv
@@ -86,6 +86,7 @@ $header = @{"Content-Type" = "application/json"}
 $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header
 $jobid = (ConvertFrom-Json ($response.Content)).jobids[0]
 Write-Host "JobID: $jobid" -ForegroundColor Yellow
-Write-Host "Task Completed." -ForegroundColor Blue
-
-
+Write-Host "
+Triggerd Info : $deviceInfo" -ForegroundColor Blue
+Write-Host "
+Task Completed." -ForegroundColor Blue
