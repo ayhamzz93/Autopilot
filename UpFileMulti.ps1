@@ -4,7 +4,7 @@ $titleNull = ""
 $message1 = "What would you like to do?"
 $message2 = "Assign user"
 $message3 = "Custom Profile"
-
+$message4 = "Computer Name"
 $Add = New-Object System.Management.Automation.Host.ChoiceDescription "&Add New Device", "Add a new device"
 	
 $Edit = New-Object System.Management.Automation.Host.ChoiceDescription "&Edit Existing Device", "Edit Existing Device"
@@ -23,23 +23,55 @@ if($M1 -eq 1) {
    $Action = "Edit"
 }
 
-$options2 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
-$M2 = $host.ui.PromptForChoice($titleNull, $message2, $options2, 0)
-if($M2 -eq 0) {
-   $assignedUser = $null
+if ($Action -match "Add"){
+
+   $options2 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+   $M2 = $host.ui.PromptForChoice($titleNull, $message2, $options2, 0)
+   if($M2 -eq 0) {
+      $assignedUser = $null
+   }
+   if($M2 -eq 1) {
+      $assignedUser = Read-Host "Please Enter User Name followed by @ad.umu.se"
+   }
+   
+   $options3 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+   $M3 = $host.ui.PromptForChoice($titleNull, $message3, $options3, 0)
+   if($M3 -eq 0) {
+      $GroupTag = $null
+   }
+   if($M3 -eq 1) {
+      $GroupTag = Read-Host "Please Enter Profile name provided by ITS"
+   }
 }
-if($M2 -eq 1) {
-   $assignedUser = Read-Host "Please Enter User Name followed by @ad.umu.se"
+elseif($Action -match "Edit"){
+   $options2 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+   $M2 = $host.ui.PromptForChoice($titleNull, $message2, $options2, 0)
+   if($M2 -eq 0) {
+      $assignedUser = $null
+   }
+   if($M2 -eq 1) {
+      $assignedUser = Read-Host "Please Enter User Name followed by @ad.umu.se"
+   }
+   
+   $options3 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+   $M3 = $host.ui.PromptForChoice($titleNull, $message3, $options3, 0)
+   if($M3 -eq 0) {
+      $GroupTag = $null
+   }
+   if($M3 -eq 1) {
+      $GroupTag = Read-Host "Please Enter Profile name provided by ITS"
+   }
+   
+   $options4 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+   $M4 = $host.ui.PromptForChoice($titleNull, $message4, $options4, 0)
+   if($M4 -eq 0) {
+      $ComputerName = $null
+   }
+   if($M4 -eq 1) {
+      $ComputerName = Read-Host "Please Enter Computer Name"
+   }
 }
 
-$options3 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
-$M3 = $host.ui.PromptForChoice($titleNull, $message3, $options3, 0)
-if($M3 -eq 0) {
-   $GroupTag = $null
-}
-if($M3 -eq 1) {
-   $GroupTag = Read-Host "Please Enter Profile name provided by ITS"
-}
 
 Write-Host "Running..." -ForegroundColor Blue
 #Sets Hash Directory and Generates HardwareHash file
@@ -69,14 +101,15 @@ $leftPart = $file.Substring(0, $pos)
 $rightPart = $file.Substring($pos+1)
 
 # Set Device info
-$deviceInfo = @{
+$deviceInfo1 = @{
    serialNumber = $leftPart
    hardwareIdentifier = $rightPart
    GroupTag = $GroupTag
    Action = $Action
    User = $assignedUser
+   ComputerName = $ComputerName
 }
-$deviceInfo =  $deviceInfo | ConvertTo-Json
+$deviceInfo =  $deviceInfo1 | ConvertTo-Json
 
 Write-Host "Trigger Webhook..." -ForegroundColor Blue
 #Trigger Webhook
@@ -87,7 +120,7 @@ $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $heade
 $jobid = (ConvertFrom-Json ($response.Content)).jobids[0]
 Write-Host "JobID: $jobid" -ForegroundColor Yellow
 Write-Host "
-Triggerd Info : $deviceInfo" -ForegroundColor Green
+Triggerd Info : $deviceInfo1" -ForegroundColor Green
 Write-Host "
 Task Completed." -ForegroundColor Blue
 
