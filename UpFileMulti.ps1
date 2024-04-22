@@ -120,8 +120,6 @@ $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $heade
 $jobid = (ConvertFrom-Json ($response.Content)).jobids[0]
 Write-Host "JobID: $jobid" -ForegroundColor Yellow
 Write-Host "
-Triggerd Info : $deviceInfo1" -ForegroundColor Green
-Write-Host "
 Task Completed." -ForegroundColor Blue
 
 
