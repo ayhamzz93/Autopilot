@@ -3,7 +3,7 @@ $title = "Intune Device Configuration Tool"
 $titleNull = ""
 $message1 = "What would you like to do?"
 $message2 = "Assign user"
-$message3 = "Custom Profile"
+$message3 = "Group Tag"
 $message4 = "Computer Name"
 $Add = New-Object System.Management.Automation.Host.ChoiceDescription "&Add New Device", "Add a new device"
 	
@@ -59,7 +59,7 @@ elseif($Action -match "Edit"){
       $GroupTag = $null
    }
    if($M3 -eq 1) {
-      $GroupTag = Read-Host "Please Enter Profile name provided by ITS"
+      $GroupTag = Read-Host "Please Enter The Group Tag provided by ITS"
    }
    
    $options4 = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
