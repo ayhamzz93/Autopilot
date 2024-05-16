@@ -116,7 +116,7 @@ Write-Host "Trigger Webhook..." -ForegroundColor Blue
 $uri = 'https://c12c6805-7e33-44ea-a095-2105f519a048.webhook.sec.azure-automation.net/webhooks?token=ffkIpeCc0HJPHGX2PhEW7Az99MwjQrXkKLdae%2fV0xow%3d'
 $body = $deviceInfo
 $header = @{"Content-Type" = "application/json"}
-$response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header
+$response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header -UseBasicParsing
 $jobid = (ConvertFrom-Json ($response.Content)).jobids[0]
 Write-Host "JobID: $jobid" -ForegroundColor Yellow
 Write-Host "
