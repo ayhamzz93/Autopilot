@@ -113,7 +113,7 @@ $deviceInfo =  $deviceInfo1 | ConvertTo-Json
 
 Write-Host "Trigger Webhook..." -ForegroundColor Blue
 #Trigger Webhook
-$uri = 'https://c12c6805-7e33-44ea-a095-2105f519a048.webhook.sec.azure-automation.net/webhooks?token=ffkIpeCc0HJPHGX2PhEW7Az99MwjQrXkKLdae%2fV0xow%3d123'
+$uri = 'https://c12c6805-7e33-44ea-a095-2105f519a048.webhook.sec.azure-automation.net/webhooks?token=ffkIpeCc0HJPHGX2PhEW7Az99MwjQrXkKLdae%2fV0xow%3d'
 $body = $deviceInfo
 $header = @{"Content-Type" = "application/json"}
 $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body -Headers $header -UseBasicParsing
